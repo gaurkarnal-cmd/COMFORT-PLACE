@@ -1,0 +1,753 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Comfort Place 💗</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Pacifico&display=swap"
+        rel="stylesheet"
+    >
+</head>
+
+<body>
+
+    <!-- Floating background -->
+    <div class="background-hearts" id="backgroundHearts"></div>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+
+        <div class="nav-logo">
+            Comfort Place <span>♡</span>
+        </div>
+
+        <div class="nav-links">
+            <button data-scroll="home">Home</button>
+            <button data-scroll="kitty">Kitties</button>
+            <button data-scroll="chocolate">Chocolate</button>
+            <button data-scroll="love">Love</button>
+        </div>
+
+        <button class="nav-heart" id="navHeart">
+            💗
+        </button>
+
+    </nav>
+
+
+    <!-- HERO -->
+    <section class="hero" id="home">
+
+        <div class="hero-sticker sticker-one">🎀</div>
+        <div class="hero-sticker sticker-two">🐱</div>
+        <div class="hero-sticker sticker-three">🧸</div>
+        <div class="hero-sticker sticker-four">🌷</div>
+
+        <div class="hero-content">
+
+            <div class="tiny-pill">
+                ✦ a little place made with love ✦
+            </div>
+
+            <h1>
+                Comfort<br>
+                <span>Place</span>
+            </h1>
+
+            <p class="welcome-text">
+                Welcome home, <strong>Avni Jiii</strong> 🎀
+            </p>
+
+            <p class="hero-description">
+                Jab duniya thodi zyada ho jaaye,
+                idhar aa jaana, babuuu. 🧸
+            </p>
+
+            <button class="main-button" id="enterButton">
+                <span>Come inside</span>
+                <span>♡</span>
+            </button>
+
+            <p class="made-with">
+                made by your Motuu 💌
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- COZY INTRO -->
+    <section class="section cozy-section">
+
+        <div class="section-title">
+
+            <span>🌷 YOUR LITTLE CORNER</span>
+
+            <h2>
+                You don't have to do anything here.
+            </h2>
+
+            <p>
+                Just sit back, breathe, and let your Motuu
+                take care of the tiny things. 💗
+            </p>
+
+        </div>
+
+        
+<!-- =================================
+     COZY COMFORT CENTER
+================================= -->
+
+<section class="section cozy-section">
+
+    <div class="section-title">
+
+        <span>🌷 YOUR LITTLE CORNER</span>
+
+        <h2>
+            What does Babuuu need?
+        </h2>
+
+        <p>
+            Choose carefully. Motuu has prepared everything. 🎀
+        </p>
+
+    </div>
+
+
+    <div class="cozy-grid">
+
+        <!-- HUG -->
+        <button
+            class="cozy-card"
+            id="hugCard"
+        >
+
+            <div class="card-icon">
+                🫂
+            </div>
+
+            <h3>
+                Need a hug?
+            </h3>
+
+            <p>
+                Motuu's hug department is open.
+            </p>
+
+            <span class="card-arrow">
+                tap me ♡
+            </span>
+
+        </button>
+
+
+        <!-- KITTY -->
+        <button
+            class="cozy-card"
+            id="kittyCard"
+        >
+
+            <div class="card-icon">
+                🐱
+            </div>
+
+            <h3>
+                Need a kitty?
+            </h3>
+
+            <p>
+                One tiny kitty coming right up.
+            </p>
+
+            <span class="card-arrow">
+                tap me ♡
+            </span>
+
+        </button>
+
+
+        <!-- CHOCOLATE -->
+        <button
+            class="cozy-card"
+            id="miniChocolateCard"
+        >
+
+            <div class="card-icon">
+                🍫
+            </div>
+
+            <h3>
+                Need chocolate?
+            </h3>
+
+            <p>
+                This is obviously an emergency.
+            </p>
+
+            <span class="card-arrow">
+                tap me ♡
+            </span>
+
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- =================================
+     COMFORT POPUP
+================================= -->
+
+<div
+    class="comfort-popup"
+    id="comfortPopup"
+>
+
+    <div class="comfort-popup-card">
+
+        <button
+            class="comfort-close"
+            id="comfortClose"
+        >
+            ×
+        </button>
+
+
+        <!-- HUG CONTENT -->
+
+        <div
+            class="popup-content"
+            id="hugContent"
+        >
+
+            <div class="popup-big-icon">
+                🫂
+            </div>
+
+            <span class="popup-label">
+                MOTUU'S HUG DEPARTMENT
+            </span>
+
+            <h2>
+                Idhar aao Babuuu 🥺
+            </h2>
+
+            <div class="hug-photo">
+
+                <img
+                    src="images/hug.jpg"
+                    alt="A comforting photo"
+                >
+
+            </div>
+
+            <p>
+                This is your official virtual hug.
+                No returning it. 🧸💗
+            </p>
+
+            <button
+                class="popup-action"
+                id="hugAgain"
+            >
+                🫂 One more hug
+            </button>
+
+        </div>
+
+
+        <!-- KITTY CONTENT -->
+
+        <div
+            class="popup-content"
+            id="kittyContent"
+        >
+
+            <div class="popup-big-icon">
+                🐱
+            </div>
+
+            <span class="popup-label">
+                KITTY DELIVERY SERVICE
+            </span>
+
+            <h2>
+                A kitty for my Babuuu 🎀
+            </h2>
+
+            <div class="popup-photo">
+
+                <img
+                    id="popupKittyImage"
+                    src="images/kitty1.jpg"
+                    alt="Cute kitty"
+                >
+
+            </div>
+
+            <p id="kittyCaption">
+                Tiny kitty has arrived. 🐱
+            </p>
+
+            <button
+                class="popup-action"
+                id="moreKitty"
+            >
+                🐱 More kitty
+            </button>
+
+        </div>
+
+
+        <!-- CHOCOLATE CONTENT -->
+
+        <div
+            class="popup-content"
+            id="miniChocolateContent"
+        >
+
+            <div class="popup-big-icon">
+                🍫
+            </div>
+
+            <span class="popup-label">
+                EMERGENCY CHOCOLATE
+            </span>
+
+            <h2>
+                Chocolate delivered.
+            </h2>
+
+            <div class="popup-photo">
+
+                <img
+                    src="images/chocolate.jpg"
+                    alt="Bournville Fruit and Nut chocolate"
+                >
+
+            </div>
+
+            <p>
+                Bournville Fruit & Nut for my
+                kaju katli. 🍫💗
+            </p>
+
+            <button
+                class="popup-action"
+                id="moreChocolate"
+            >
+                🍫 More chocolate
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+    <!-- KITTY SECTION -->
+    <section class="section kitty-section" id="kitty">
+
+        <div class="section-title">
+
+            <span>🐾 THE CUTENESS DEPARTMENT</span>
+
+            <h2>
+                Kitties for my Babuuu
+            </h2>
+
+            <p>
+                Scientifically proven to make the day approximately
+                73% cuter. Probably.
+            </p>
+
+        </div>
+
+
+        <div class="kitty-wall">
+
+            <div class="polaroid polaroid-one">
+
+                <img src="images/kitty1.jpg" alt="Cute kitty">
+
+                <p>
+                    babuuu spotted 🐱
+                </p>
+
+            </div>
+
+
+            <div class="polaroid polaroid-two">
+
+                <img src="images/kitty2.jpg" alt="Cute kitten">
+
+                <p>
+                    tiny baby energy 🎀
+                </p>
+
+            </div>
+
+
+            <div class="polaroid polaroid-three">
+
+                <img src="images/images.jpeg" alt="Cute kittens">
+
+                <p>
+                    comfort squad 🧸
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- CHOCOLATE -->
+    <section class="section chocolate-section" id="chocolate">
+
+        <div class="section-title">
+
+            <span>🍫 TOP PRIORITY</span>
+
+            <h2>
+                Babuuu's Chocolate
+            </h2>
+
+            <p>
+                Motuu has memorized the important information.
+            </p>
+
+        </div>
+
+
+        <div class="chocolate-card">
+
+            <div class="chocolate-image">
+
+                <img
+                    src="images/chocolate.jpg"
+                    alt="Bournville Fruit & Nut chocolate"
+                >
+
+                <span class="chocolate-sticker">
+                    🍫
+                </span>
+
+            </div>
+
+
+            <div class="chocolate-content">
+
+                <div class="mini-label">
+                    EMERGENCY HAPPINESS SUPPLY
+                </div>
+
+                <h3>
+                    Bournville Fruit & Nut
+                </h3>
+
+                <p>
+                    Reserved exclusively for
+                    my babuuu. 💗
+                </p>
+
+                <button
+                    class="cute-button"
+                    id="chocolateButton"
+                >
+                    Give Babuuu Chocolate 🍫
+                </button>
+
+                <div
+                    id="chocolateResult"
+                    class="result-message"
+                ></div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- LOVE LETTER -->
+    <section class="section love-section" id="love">
+
+        <div class="section-title">
+
+            <span>💌 SECRET MAIL</span>
+
+            <h2>
+                A Letter For Avni Jiii
+            </h2>
+
+            <p>
+                This one is from Motuu.
+            </p>
+
+        </div>
+
+
+        <div class="envelope-area">
+
+            <button
+                class="envelope"
+                id="envelope"
+                aria-label="Open love letter"
+            >
+
+                <div class="envelope-flap"></div>
+
+                <div class="envelope-body">
+                    💌
+                </div>
+
+                <span>
+                    Open me, babuuu
+                </span>
+
+            </button>
+
+
+            <div
+                class="letter"
+                id="letter"
+            >
+
+                <div class="letter-decoration">
+                    ♡ ✦ ♡
+                </div>
+
+                <h3>
+                    Dear Babuuu,
+                </h3>
+
+                <p>
+                    I know I can't magically make every
+                    uncomfortable moment disappear.
+                </p>
+
+                <p>
+                    But I hope this little place reminds you
+                    that you never have to feel like you're
+                    facing everything alone.
+                </p>
+
+                <p>
+                    You are my merii betuuu, meraa bachaaa,
+                    meri chotuu, meri kaju katli. 🎀
+                </p>
+
+                <p class="letter-love">
+                    I love youu, wifeyy jiii. ❤️
+                </p>
+
+                <p>
+                    And yes...
+                </p>
+
+                <p class="trap">
+                    Aap toh fas gaye Avni jiii. 😭
+                </p>
+
+                <p class="signature">
+                    — Your Motuu 💗
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- COMFORT MACHINE -->
+    <section class="section comfort-section">
+
+        <div class="comfort-box">
+
+            <div class="big-kitty">
+                🐱
+            </div>
+
+            <span>
+                🫂 COMFORT MACHINE
+            </span>
+
+            <h2>
+                Press when you need your Motuu
+            </h2>
+
+            <p>
+                The machine has unlimited hugs.
+                Unfortunately, it cannot physically deliver them yet. 😭
+            </p>
+
+            <button
+                class="comfort-button"
+                id="comfortButton"
+            >
+                🫂 SEND COMFORT
+            </button>
+
+            <div
+                id="comfortResult"
+                class="comfort-result"
+            >
+                Tap the button, babuuu.
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- MUSIC -->
+    <section class="section music-section">
+
+        <div class="section-title">
+
+            <span>🎵 LITTLE MUSIC CORNER</span>
+
+            <h2>
+                Punjabi Vibes
+            </h2>
+
+            <p>
+                Add your own song file and turn this into
+                your personal mini music player.
+            </p>
+
+        </div>
+
+
+        <div class="music-player">
+
+            <div class="music-disc">
+                💿
+            </div>
+
+            <div class="music-info">
+
+                <h3>
+                    Babuuu's Song 🎀
+                </h3>
+
+                <p>
+                    Your chosen Punjabi song
+                </p>
+
+                <audio
+                    id="audio"
+                    controls
+                >
+                    <source src="music/song.mp3" type="audio/mpeg">
+        .
+                </audio>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- FINAL -->
+    <section class="final-section">
+
+        <div class="final-card">
+
+            <div class="final-kitty">
+                🐱💗
+            </div>
+
+            <span>
+                ONE LAST THING...
+            </span>
+
+            <h2>
+                Before you leave
+            </h2>
+
+            <button
+                class="final-button"
+                id="finalButton"
+            >
+                Open your surprise 🎀
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- FINAL POPUP -->
+    <div
+        class="popup"
+        id="finalPopup"
+    >
+
+        <div class="popup-card">
+
+            <button
+                class="close-button"
+                id="closePopup"
+            >
+                ×
+            </button>
+
+            <div class="popup-sticker">
+                🧸💗
+            </div>
+
+            <h2>
+                Oiii Babuuu 🥺
+            </h2>
+
+            <p>
+                If you ever forget how loved you are,
+                come back here.
+            </p>
+
+            <p class="big-message">
+                I'll always be cheering for you. 💗
+            </p>
+
+            <p class="big-message">
+                I love youu, wifeyy jiii. 🎀
+            </p>
+
+            <p class="final-joke">
+                Aap toh fas gaye. 😭❤️
+            </p>
+
+            <div class="popup-hearts">
+                ♡ ♥ ♡ ♥ ♡
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script src="script.js"></script>
+
+</body>
+</html>
+

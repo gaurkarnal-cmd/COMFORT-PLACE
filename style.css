@@ -1,0 +1,1674 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --pink: #ff6f9f;
+    --pink-dark: #df4f82;
+    --pink-light: #ffe3ed;
+    --purple: #a78bda;
+    --purple-light: #eee7ff;
+
+    --text: #634354;
+    --muted: #987887;
+
+    --glass: rgba(255, 255, 255, .68);
+    --white: #fffafd;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    min-height: 100vh;
+
+    font-family: "DM Sans", sans-serif;
+
+    color: var(--text);
+
+    overflow-x: hidden;
+
+    background:
+        radial-gradient(circle at 10% 10%, #ffe0ec, transparent 30%),
+        radial-gradient(circle at 90% 15%, #e8ddff, transparent 30%),
+        radial-gradient(circle at 80% 80%, #ffe0ed, transparent 30%),
+        linear-gradient(135deg, #fff9fc, #f8f3ff);
+}
+
+
+/* =================================
+   NAVBAR
+================================= */
+
+.navbar {
+    position: fixed;
+
+    top: 18px;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    width: min(1000px, 92vw);
+
+    padding: 10px 13px 10px 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    z-index: 50;
+
+    background: rgba(255,255,255,.65);
+    backdrop-filter: blur(18px);
+
+    border: 1px solid rgba(255,255,255,.9);
+
+    border-radius: 999px;
+
+    box-shadow:
+        0 12px 40px rgba(120,70,100,.12);
+}
+
+.nav-logo {
+    font-family: "Pacifico", cursive;
+
+    color: var(--pink);
+
+    font-size: 18px;
+}
+
+.nav-logo span {
+    font-family: sans-serif;
+}
+
+.nav-links {
+    display: flex;
+    gap: 4px;
+}
+
+.nav-links button,
+.nav-heart {
+    border: none;
+
+    background: transparent;
+
+    padding: 9px 12px;
+
+    border-radius: 999px;
+
+    color: #79586a;
+
+    font-family: inherit;
+
+    cursor: pointer;
+
+    transition: .2s ease;
+}
+
+.nav-links button:hover {
+    background: var(--pink-light);
+    color: var(--pink-dark);
+}
+
+.nav-heart {
+    font-size: 19px;
+
+    background: #fff0f6;
+
+    transition: .25s ease;
+}
+
+.nav-heart:hover {
+    transform: scale(1.12) rotate(8deg);
+}
+
+
+/* =================================
+   HERO
+================================= */
+
+.hero {
+    min-height: 100vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 120px 20px 60px;
+
+    position: relative;
+}
+
+.hero-content {
+    width: min(700px, 94vw);
+
+    padding: 65px 30px;
+
+    text-align: center;
+
+    background: var(--glass);
+
+    backdrop-filter: blur(22px);
+
+    border:
+        1px solid rgba(255,255,255,.9);
+
+    border-radius: 45px;
+
+    box-shadow:
+        0 30px 100px rgba(160,90,130,.18);
+
+    animation: appear 1s ease;
+}
+
+.tiny-pill,
+.section-title > span {
+    display: inline-block;
+
+    padding: 8px 14px;
+
+    border-radius: 999px;
+
+    background: rgba(255,255,255,.7);
+
+    color: var(--pink-dark);
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    letter-spacing: 1px;
+}
+
+.hero h1 {
+    font-family: "Pacifico", cursive;
+
+    font-weight: 400;
+
+    font-size: clamp(65px, 13vw, 105px);
+
+    line-height: .95;
+
+    color: #68485a;
+
+    margin: 25px 0;
+}
+
+.hero h1 span {
+    color: var(--pink);
+}
+
+.welcome-text {
+    font-size: 21px;
+
+    color: #785667;
+
+    margin-bottom: 15px;
+}
+
+.welcome-text strong {
+    color: var(--pink);
+}
+
+.hero-description {
+    font-family: "Pacifico", cursive;
+
+    font-size: 21px;
+
+    color: #765062;
+
+    line-height: 1.7;
+
+    margin-bottom: 28px;
+}
+
+.main-button,
+.cute-button,
+.comfort-button,
+.final-button {
+    border: none;
+
+    padding: 15px 25px;
+
+    border-radius: 999px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ff73a3,
+            #c99ae0
+        );
+
+    color: white;
+
+    font-family: inherit;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 12px 30px rgba(230,100,150,.25);
+
+    transition:
+        transform .25s ease,
+        box-shadow .25s ease;
+}
+
+.main-button:hover,
+.cute-button:hover,
+.comfort-button:hover,
+.final-button:hover {
+    transform: translateY(-4px) scale(1.03);
+
+    box-shadow:
+        0 17px 38px rgba(230,100,150,.32);
+}
+
+.main-button:active,
+.cute-button:active,
+.comfort-button:active,
+.final-button:active {
+    transform: scale(.96);
+}
+
+.main-button span:last-child {
+    margin-left: 8px;
+}
+
+.made-with {
+    margin-top: 23px;
+
+    font-size: 12px;
+
+    color: #aa8e9e;
+}
+
+
+/* =================================
+   HERO STICKERS
+================================= */
+
+.hero-sticker {
+    position: absolute;
+
+    font-size: 48px;
+
+    user-select: none;
+
+    animation: floatSticker 4s ease-in-out infinite;
+}
+
+.sticker-one {
+    left: 9%;
+    top: 28%;
+}
+
+.sticker-two {
+    right: 9%;
+    top: 27%;
+
+    animation-delay: .7s;
+}
+
+.sticker-three {
+    left: 13%;
+    bottom: 17%;
+
+    animation-delay: 1.2s;
+}
+
+.sticker-four {
+    right: 13%;
+    bottom: 18%;
+
+    animation-delay: 1.8s;
+}
+
+
+/* =================================
+   SECTIONS
+================================= */
+
+.section {
+    width: min(1050px, 92vw);
+
+    margin: auto;
+
+    padding: 110px 0;
+}
+
+.section-title {
+    text-align: center;
+
+    max-width: 700px;
+
+    margin: 0 auto 50px;
+}
+
+.section-title h2 {
+    font-family: "Pacifico", cursive;
+
+    font-size: clamp(32px, 6vw, 52px);
+
+    font-weight: 400;
+
+    color: #674656;
+
+    margin: 18px 0 12px;
+}
+
+.section-title p {
+    color: var(--muted);
+
+    line-height: 1.7;
+}
+
+
+/* =================================
+   COZY CARDS
+================================= */
+
+.cozy-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 20px;
+}
+
+.cozy-card {
+    border: none;
+
+    padding: 35px 20px;
+
+    background: rgba(255,255,255,.65);
+
+    border:
+        1px solid rgba(255,255,255,.9);
+
+    border-radius: 30px;
+
+    color: var(--text);
+
+    cursor: pointer;
+
+    box-shadow:
+        0 15px 45px rgba(150,90,130,.10);
+
+    transition: .3s ease;
+}
+
+.cozy-card:hover {
+    transform: translateY(-8px) rotate(-1deg);
+}
+
+.cozy-card > div {
+    font-size: 48px;
+
+    margin-bottom: 15px;
+}
+
+.cozy-card h3 {
+    margin-bottom: 8px;
+}
+
+.cozy-card p {
+    color: var(--muted);
+
+    font-size: 13px;
+}
+
+.cozy-message {
+    min-height: 35px;
+
+    margin-top: 28px;
+
+    text-align: center;
+
+    color: var(--pink-dark);
+
+    font-family: "Pacifico", cursive;
+
+    font-size: 19px;
+}
+
+
+/* =================================
+   KITTY WALL
+================================= */
+
+.kitty-wall {
+    min-height: 500px;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    gap: 25px;
+
+    padding: 30px;
+}
+
+.polaroid {
+    width: 280px;
+
+    padding: 12px 12px 20px;
+
+    background: white;
+
+    box-shadow:
+        0 20px 50px rgba(100,60,90,.18);
+
+    transition:
+        transform .3s ease;
+
+    text-align: center;
+}
+
+.polaroid img {
+    width: 100%;
+
+    height: 270px;
+
+    object-fit: cover;
+
+    display: block;
+
+    margin-bottom: 14px;
+}
+
+.polaroid p {
+    font-family: "Pacifico", cursive;
+
+    color: #765365;
+
+    font-size: 16px;
+}
+
+.polaroid-one {
+    transform: rotate(-6deg);
+}
+
+.polaroid-two {
+    transform: translateY(-35px) rotate(3deg);
+
+    z-index: 2;
+}
+
+.polaroid-three {
+    transform: rotate(7deg);
+}
+
+.polaroid:hover {
+    transform:
+        translateY(-15px)
+        rotate(0deg)
+        scale(1.04);
+
+    z-index: 5;
+}
+
+
+/* =================================
+   CHOCOLATE
+================================= */
+
+.chocolate-card {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    align-items: center;
+
+    gap: 35px;
+
+    padding: 22px;
+
+    background: rgba(255,255,255,.7);
+
+    border-radius: 38px;
+
+    border:
+        1px solid rgba(255,255,255,.9);
+
+    box-shadow:
+        0 25px 70px rgba(130,75,100,.14);
+}
+
+.chocolate-image {
+    position: relative;
+}
+
+.chocolate-image img {
+    width: 100%;
+
+    height: 390px;
+
+    object-fit: cover;
+
+    display: block;
+
+    border-radius: 28px;
+}
+
+.chocolate-sticker {
+    position: absolute;
+
+    right: -14px;
+    bottom: -14px;
+
+    width: 70px;
+    height: 70px;
+
+    display: grid;
+    place-items: center;
+
+    font-size: 38px;
+
+    background: white;
+
+    border-radius: 50%;
+
+    box-shadow:
+        0 10px 25px rgba(80,40,60,.15);
+
+    animation: floatSticker 3s ease-in-out infinite;
+}
+
+.chocolate-content {
+    text-align: center;
+
+    padding: 20px;
+}
+
+.mini-label {
+    color: var(--pink-dark);
+
+    font-size: 10px;
+
+    letter-spacing: 2px;
+
+    font-weight: 700;
+
+    margin-bottom: 15px;
+}
+
+.chocolate-content h3 {
+    font-family: "Pacifico", cursive;
+
+    font-size: 34px;
+
+    font-weight: 400;
+
+    color: #684858;
+
+    margin-bottom: 12px;
+}
+
+.chocolate-content p {
+    color: var(--muted);
+
+    margin-bottom: 25px;
+}
+
+.result-message {
+    min-height: 30px;
+
+    margin-top: 20px;
+
+    color: var(--pink-dark);
+
+    font-family: "Pacifico", cursive;
+
+    font-size: 18px;
+}
+
+
+/* =================================
+   LOVE LETTER
+================================= */
+
+.envelope-area {
+    min-height: 560px;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    position: relative;
+}
+
+.envelope {
+    position: absolute;
+
+    width: 320px;
+    height: 220px;
+
+    border: none;
+
+    background: #ffbad1;
+
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 25px 60px rgba(150,80,110,.2);
+
+    transition:
+        transform .5s ease;
+
+    z-index: 3;
+}
+
+.envelope:hover {
+    transform: translateY(-8px) rotate(-1deg);
+}
+
+.envelope-body {
+    font-size: 65px;
+
+    margin-top: 25px;
+}
+
+.envelope > span {
+    display: block;
+
+    margin-top: 12px;
+
+    color: #9b4868;
+
+    font-weight: 700;
+}
+
+.envelope-flap {
+    position: absolute;
+
+    inset: 0 0 auto 0;
+
+    height: 110px;
+
+    background: #ff9fbe;
+
+    clip-path:
+        polygon(
+            0 0,
+            100% 0,
+            50% 100%
+        );
+
+    transform-origin: top;
+
+    transition:
+        transform .6s ease;
+
+    z-index: 4;
+}
+
+.envelope.open .envelope-flap {
+    transform: rotateX(180deg);
+}
+
+.letter {
+    width: min(520px, 90vw);
+
+    padding: 45px 35px;
+
+    background: #fffdf6;
+
+    border-radius: 8px;
+
+    box-shadow:
+        0 25px 70px rgba(100,60,60,.18);
+
+    opacity: 0;
+
+    transform:
+        translateY(30px)
+        scale(.9);
+
+    pointer-events: none;
+
+    transition:
+        opacity .6s ease,
+        transform .6s ease;
+
+    z-index: 2;
+}
+
+.letter.show {
+    opacity: 1;
+
+    transform:
+        translateY(0)
+        scale(1);
+
+    pointer-events: auto;
+}
+
+.letter-decoration {
+    text-align: center;
+
+    color: var(--pink);
+
+    letter-spacing: 8px;
+
+    margin-bottom: 20px;
+}
+
+.letter h3 {
+    font-family: "Pacifico", cursive;
+
+    font-size: 27px;
+
+    font-weight: 400;
+
+    color: #745063;
+
+    margin-bottom: 20px;
+}
+
+.letter p {
+    color: #795e6b;
+
+    line-height: 1.8;
+
+    margin-bottom: 14px;
+}
+
+.letter-love {
+    font-family: "Pacifico", cursive;
+
+    color: var(--pink) !important;
+
+    font-size: 20px;
+}
+
+.trap {
+    font-family: "Pacifico", cursive;
+
+    color: #a5677e !important;
+}
+
+.signature {
+    text-align: right;
+
+    color: #a0808f !important;
+}
+
+
+/* =================================
+   COMFORT MACHINE
+================================= */
+
+.comfort-section {
+    display: flex;
+
+    justify-content: center;
+}
+
+.comfort-box {
+    width: min(700px, 94vw);
+
+    padding: 60px 30px;
+
+    text-align: center;
+
+    border-radius: 45px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,224,237,.8),
+            rgba(235,226,255,.8)
+        );
+
+    box-shadow:
+        0 25px 80px rgba(150,90,140,.15);
+}
+
+.big-kitty {
+    font-size: 70px;
+
+    animation:
+        kittyBounce 2s ease-in-out infinite;
+}
+
+.comfort-box > span {
+    display: inline-block;
+
+    margin-top: 15px;
+
+    color: var(--pink-dark);
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    letter-spacing: 2px;
+}
+
+.comfort-box h2 {
+    font-family: "Pacifico", cursive;
+
+    font-size: 34px;
+
+    font-weight: 400;
+
+    color: #704a5c;
+
+    margin: 15px 0;
+}
+
+.comfort-box p {
+    max-width: 520px;
+
+    margin: auto auto 25px;
+
+    color: var(--muted);
+
+    line-height: 1.7;
+}
+
+.comfort-result {
+    min-height: 35px;
+
+    margin-top: 25px;
+
+    color: var(--pink-dark);
+
+    font-family: "Pacifico", cursive;
+
+    font-size: 19px;
+}
+
+
+/* =================================
+   MUSIC
+================================= */
+
+.music-player {
+    width: min(650px, 94vw);
+
+    margin: auto;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 25px;
+
+    padding: 25px;
+
+    background: rgba(255,255,255,.7);
+
+    border-radius: 30px;
+
+    box-shadow:
+        0 20px 60px rgba(120,70,100,.12);
+}
+
+.music-disc {
+    width: 100px;
+    height: 100px;
+
+    display: grid;
+    place-items: center;
+
+    flex-shrink: 0;
+
+    font-size: 50px;
+
+    border-radius: 50%;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ffbad3,
+            #d8c6f5
+        );
+
+    animation:
+        spin 8s linear infinite;
+
+    animation-play-state: paused;
+}
+
+.music-info {
+    flex: 1;
+}
+
+.music-info h3 {
+    color: #704a5c;
+
+    margin-bottom: 5px;
+}
+
+.music-info p {
+    color: var(--muted);
+
+    font-size: 13px;
+
+    margin-bottom: 15px;
+}
+
+audio {
+    width: 100%;
+}
+
+
+/* =================================
+   FINAL
+================================= */
+
+.final-section {
+    min-height: 80vh;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 100px 20px;
+}
+
+.final-card {
+    width: min(650px, 94vw);
+
+    padding: 65px 30px;
+
+    text-align: center;
+
+    border-radius: 45px;
+
+    background: rgba(255,255,255,.7);
+
+    box-shadow:
+        0 25px 80px rgba(150,80,120,.15);
+}
+
+.final-kitty {
+    font-size: 65px;
+
+    margin-bottom: 15px;
+}
+
+.final-card > span {
+    font-size: 11px;
+
+    font-weight: 700;
+
+    letter-spacing: 2px;
+
+    color: var(--pink-dark);
+}
+
+.final-card h2 {
+    font-family: "Pacifico", cursive;
+
+    font-size: 40px;
+
+    font-weight: 400;
+
+    margin: 15px 0 25px;
+
+    color: #6d4859;
+}
+
+
+/* =================================
+   POPUP
+================================= */
+
+.popup {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 100;
+
+    display: grid;
+
+    place-items: center;
+
+    padding: 20px;
+
+    background: rgba(80,40,65,.28);
+
+    backdrop-filter: blur(12px);
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    transition: .3s ease;
+}
+
+.popup.show {
+    opacity: 1;
+
+    visibility: visible;
+}
+
+.popup-card {
+    position: relative;
+
+    width: min(470px, 94vw);
+
+    padding: 50px 30px;
+
+    text-align: center;
+
+    background: #fffafd;
+
+    border-radius: 35px;
+
+    box-shadow:
+        0 30px 100px rgba(70,30,60,.25);
+
+    transform: scale(.85);
+
+    transition: .4s ease;
+}
+
+.popup.show .popup-card {
+    transform: scale(1);
+}
+
+.close-button {
+    position: absolute;
+
+    right: 18px;
+    top: 13px;
+
+    border: none;
+
+    background: transparent;
+
+    font-size: 30px;
+
+    color: #a78b99;
+
+    cursor: pointer;
+}
+
+.popup-sticker {
+    font-size: 65px;
+
+    margin-bottom: 10px;
+}
+
+.popup-card h2 {
+    font-family: "Pacifico", cursive;
+
+    font-size: 32px;
+
+    font-weight: 400;
+
+    color: var(--pink);
+
+    margin-bottom: 15px;
+}
+
+.popup-card p {
+    color: #765566;
+
+    line-height: 1.7;
+
+    margin-bottom: 12px;
+}
+
+.big-message {
+    font-family: "Pacifico", cursive;
+
+    font-size: 19px;
+
+    color: var(--pink) !important;
+}
+
+.final-joke {
+    color: #9c647b !important;
+
+    font-family: "Pacifico", cursive;
+}
+
+.popup-hearts {
+    color: var(--pink);
+
+    letter-spacing: 7px;
+
+    margin-top: 22px;
+}
+
+
+/* =================================
+   BACKGROUND HEARTS
+================================= */
+
+.background-hearts span {
+    position: fixed;
+
+    pointer-events: none;
+
+    color: rgba(255,111,159,.25);
+
+    font-size: 20px;
+
+    z-index: -1;
+
+    animation:
+        backgroundFloat linear infinite;
+}
+
+
+/* =================================
+   ANIMATIONS
+================================= */
+
+@keyframes appear {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(.96);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes floatSticker {
+    0%, 100% {
+        transform: translateY(0) rotate(-4deg);
+    }
+
+    50% {
+        transform: translateY(-12px) rotate(4deg);
+    }
+}
+
+@keyframes kittyBounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes backgroundFloat {
+
+    from {
+        transform:
+            translateY(100vh)
+            rotate(0);
+        opacity: 0;
+    }
+
+    15% {
+        opacity: 1;
+    }
+
+    to {
+        transform:
+            translateY(-20vh)
+            rotate(180deg);
+        opacity: 0;
+    }
+}
+
+
+/* =================================
+   MOBILE
+================================= */
+
+@media (max-width: 800px) {
+
+    .navbar {
+        top: 10px;
+    }
+
+    .nav-links {
+        display: none;
+    }
+
+    .hero-sticker {
+        font-size: 32px;
+    }
+
+    .hero-content {
+        padding: 55px 22px;
+    }
+
+    .cozy-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .kitty-wall {
+        flex-direction: column;
+
+        min-height: auto;
+    }
+
+    .polaroid {
+        width: min(310px, 90vw);
+    }
+
+    .polaroid-one,
+    .polaroid-two,
+    .polaroid-three {
+        transform: none;
+    }
+
+    .chocolate-card {
+        grid-template-columns: 1fr;
+    }
+
+    .chocolate-image img {
+        height: 320px;
+    }
+
+    .music-player {
+        flex-direction: column;
+
+        text-align: center;
+    }
+
+    .music-info {
+        width: 100%;
+    }
+}
+
+```css
+/* =================================
+   COZY CARD UPGRADE
+================================= */
+
+.cozy-card {
+    position: relative;
+
+    overflow: hidden;
+
+    min-height: 240px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid rgba(255,255,255,.9);
+
+    padding: 30px 20px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.8),
+            rgba(255,241,248,.65)
+        );
+
+    border-radius: 32px;
+
+    color: var(--text);
+
+    cursor: pointer;
+
+    box-shadow:
+        0 18px 50px rgba(150,90,130,.11);
+
+    transition:
+        transform .3s ease,
+        box-shadow .3s ease;
+}
+
+.cozy-card::before {
+    content: "";
+
+    position: absolute;
+
+    width: 130px;
+    height: 130px;
+
+    top: -60px;
+    right: -40px;
+
+    border-radius: 50%;
+
+    background: rgba(255,180,210,.18);
+}
+
+.cozy-card:hover {
+    transform:
+        translateY(-9px)
+        rotate(-1deg);
+
+    box-shadow:
+        0 25px 60px rgba(150,90,130,.18);
+}
+
+.cozy-card:active {
+    transform: scale(.96);
+}
+
+.card-icon {
+    font-size: 52px;
+
+    margin-bottom: 14px;
+
+    transition: transform .3s ease;
+}
+
+.cozy-card:hover .card-icon {
+    transform:
+        scale(1.15)
+        rotate(5deg);
+}
+
+.cozy-card h3 {
+    font-size: 20px;
+
+    margin-bottom: 7px;
+}
+
+.cozy-card p {
+    color: var(--muted);
+
+    font-size: 13px;
+
+    margin-bottom: 13px;
+}
+
+.card-arrow {
+    color: var(--pink);
+
+    font-family: "Pacifico", cursive;
+
+    font-size: 14px;
+}
+
+
+/* =================================
+   COMFORT POPUP
+================================= */
+
+.comfort-popup {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 120;
+
+    display: grid;
+
+    place-items: center;
+
+    padding: 20px;
+
+    background:
+        rgba(70,35,60,.25);
+
+    backdrop-filter: blur(14px);
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    transition: .3s ease;
+}
+
+.comfort-popup.show {
+    opacity: 1;
+
+    visibility: visible;
+}
+
+.comfort-popup-card {
+    position: relative;
+
+    width: min(480px, 94vw);
+
+    max-height: 90vh;
+
+    overflow-y: auto;
+
+    padding: 38px 28px;
+
+    text-align: center;
+
+    background:
+        linear-gradient(
+            145deg,
+            #fffafd,
+            #fff3f8
+        );
+
+    border-radius: 38px;
+
+    box-shadow:
+        0 30px 100px rgba(70,30,60,.25);
+
+    transform:
+        translateY(25px)
+        scale(.9);
+
+    transition: .4s ease;
+}
+
+.comfort-popup.show
+.comfort-popup-card {
+    transform:
+        translateY(0)
+        scale(1);
+}
+
+.comfort-close {
+    position: absolute;
+
+    top: 13px;
+    right: 18px;
+
+    border: none;
+
+    background: transparent;
+
+    color: #a68a99;
+
+    font-size: 30px;
+
+    cursor: pointer;
+
+    z-index: 5;
+}
+
+.popup-content {
+    display: none;
+}
+
+.popup-content.active {
+    display: block;
+
+    animation:
+        popupAppear .4s ease;
+}
+
+.popup-big-icon {
+    font-size: 65px;
+
+    margin-bottom: 10px;
+
+    animation:
+        floatSticker 3s ease-in-out infinite;
+}
+
+.popup-label {
+    color: var(--pink-dark);
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    letter-spacing: 2px;
+}
+
+.popup-content h2 {
+    font-family: "Pacifico", cursive;
+
+    font-weight: 400;
+
+    font-size: 30px;
+
+    color: #704b5c;
+
+    margin: 13px 0 18px;
+}
+
+.popup-content p {
+    color: var(--muted);
+
+    line-height: 1.7;
+
+    margin: 17px 0;
+}
+
+
+/* =================================
+   POPUP PHOTOS
+================================= */
+
+.hug-photo,
+.popup-photo {
+    width: min(310px, 90%);
+
+    height: 230px;
+
+    margin: auto;
+
+    padding: 8px;
+
+    background: white;
+
+    border-radius: 25px;
+
+    box-shadow:
+        0 15px 40px rgba(100,50,80,.15);
+
+    transform: rotate(-2deg);
+}
+
+.popup-photo {
+    transform: rotate(2deg);
+}
+
+.hug-photo img,
+.popup-photo img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    border-radius: 18px;
+}
+
+
+/* =================================
+   POPUP BUTTON
+================================= */
+
+.popup-action {
+    border: none;
+
+    padding: 13px 22px;
+
+    border-radius: 999px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ff78a6,
+            #c69ae1
+        );
+
+    color: white;
+
+    font-family: inherit;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 10px 25px rgba(220,100,150,.22);
+
+    transition: .25s ease;
+}
+
+.popup-action:hover {
+    transform:
+        translateY(-3px)
+        scale(1.03);
+}
+
+.popup-action:active {
+    transform: scale(.95);
+}
+
+
+@keyframes popupAppear {
+
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(15px)
+            scale(.96);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0)
+            scale(1);
+    }
+
+}
+
+
+/* MOBILE */
+
+@media (max-width: 700px) {
+
+    .comfort-popup-card {
+        padding: 40px 18px;
+    }
+
+    .hug-photo,
+    .popup-photo {
+        width: 90%;
+
+        height: 210px;
+    }
+
+}
+
