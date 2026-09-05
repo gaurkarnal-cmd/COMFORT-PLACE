@@ -1,65 +1,80 @@
+javascript
 /* =========================================================
    COMFORT PLACE 💗
-   COMPLETE UPDATED SCRIPT
+   FINAL CLEANED & COMPATIBLE SCRIPT
    ========================================================= */
 
 "use strict";
+
 
 /* =========================================================
    DOM HELPERS
    ========================================================= */
 
-const $ = (selector, parent = document) => {
-    return parent.querySelector(selector);
-};
+const $ = (selector, parent = document) =>
+    parent.querySelector(selector);
 
-const $$ = (selector, parent = document) => {
-    return [...parent.querySelectorAll(selector)];
-};
-
-const safeAddEvent = (element, event, callback, options = {}) => {
-    if (!element) return;
-    element.addEventListener(event, callback, options);
-};
+const $$ = (selector, parent = document) =>
+    [...parent.querySelectorAll(selector)];
 
 
 /* =========================================================
-   GLOBAL STATE
+   SAFE EVENT HELPER
+   Prevents the whole script from crashing if an element
+   does not exist.
+   ========================================================= */
+
+function on(element, event, callback, options) {
+    if (!element) return;
+    element.addEventListener(event, callback, options);
+}
+
+
+/* =========================================================
+   APP STATE
    ========================================================= */
 
 const AppState = {
     popupOpen: false,
-    currentPopup: null,
     musicPlaying: false,
     letterOpen: false,
-    periodMessageIndex: 0,
-    initialized: false
+    periodMessageIndex: 0
 };
 
 
 /* =========================================================
-   PAGE READY
+   START APP
    ========================================================= */
 
 document.addEventListener("DOMContentLoaded", () => {
 
-    if (AppState.initialized) return;
-
-    AppState.initialized = true;
-
     initializeNavigation();
-    initializePopups();
-    initializeComfortCards();
+    initializeEnterButton();
+
+    initializeComfortPopup();
     initializePeriodComfort();
     initializeChocolate();
+
     initializeLoveLetter();
+    initializeComfortMachine();
+
     initializeMusic();
-    initializeHeartInteractions();
-    initializeScrollReveal();
+
+    initializeFinalSurprise();
+
     initializeBackgroundHearts();
-    initializeFinalSection();
-    initializeKeyboardControls();
+    initializeScrollReveal();
+
+    initializeHeartInteractions();
     initializeImageFallbacks();
+
+    initializeKeyboardControls();
+    initializeButtonEffects();
+
+    console.log(
+        "%c💗 Comfort Place loaded successfully!",
+        "font-size:16px;font-weight:bold;color:#d85c88;"
+    );
 
 });
 
@@ -70,282 +85,352 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function initializeNavigation() {
 
-    const navButtons = $$(".nav-links button");
+    $$("[data-scroll]").forEach(button => {
 
-    navButtons.forEach(button => {
+        on(button, "click", () => {
 
-        safeAddEvent(button, "click", () => {
+            const sectionId = button.dataset.scroll;
+
+            const section =
+                document.getElementById(sectionId);
+
+            if (!section) return;
+
+            const navbar =
+                $(".navbar");
+
+            const offset =
+                navbar
+                    ? navbar.offsetHeight + 20
+                    : 20;
+
+            const position =
+                section.getBoundingClientRect().top +
+                window.scrollY -
+                offset;
+
+            window.scrollTo({
+                top: Math.max(0, position),
+                behavior: "smooth"
+            });
+
+        });
+
+    });
+
+
+    /* Supports upgraded navigation buttons too */
+
+    $$(".nav-links button:not([data-scroll])").forEach(button => {
+
+        on(button, "click", () => {
 
             const target =
                 button.dataset.target ||
-                button.getAttribute("data-section") ||
-                button.getAttribute("aria-controls");
+                button.dataset.section;
 
-            if (target) {
+            if (!target) return;
 
-                scrollToTarget(target);
+            const element =
+                document.querySelector(
+                    target.startsWith("#")
+                        ? target
+                        : `#${target}`
+                );
 
-                return;
+            if (!element) return;
 
-            }
-
-            const text = button.textContent
-                .trim()
-                .toLowerCase();
-
-            const targetMap = {
-                home: "#home",
-                comfort: "#comfort",
-                memories: "#memories",
-                letter: "#letter",
-                music: "#music",
-                chocolate: "#chocolate",
-                "little things": "#little-things"
-            };
-
-            if (targetMap[text]) {
-                scrollToTarget(targetMap[text]);
-            }
+            element.scrollIntoView({
+                behavior: "smooth"
+            });
 
         });
 
     });
 
 
-    const navHeart = $(".nav-heart");
+    /* NAV HEART */
 
-    safeAddEvent(navHeart, "click", event => {
+    const navHeart =
+        $("#navHeart") ||
+        $(".nav-heart");
 
-        createHeartBurst(
-            event.clientX,
-            event.clientY,
-            14
-        );
+    on(navHeart, "click", event => {
 
-        showQuickMessage(
-            "A little heart just for you 💗"
-        );
+        const x =
+            event.clientX || window.innerWidth / 2;
 
-    });
+        const y =
+            event.clientY || window.innerHeight / 2;
 
-}
+        createHeartBurst(x, y, 18);
 
-
-function scrollToTarget(target) {
-
-    if (!target) return;
-
-    let element = null;
-
-    try {
-
-        element = document.querySelector(
-            target.startsWith("#")
-                ? target
-                : `#${target}`
-        );
-
-    } catch (error) {
-
-        console.warn(
-            "Invalid navigation target:",
-            target
-        );
-
-        return;
-
-    }
-
-    if (!element) return;
-
-    const navbar = $(".navbar");
-
-    const offset =
-        navbar
-            ? navbar.offsetHeight + 25
-            : 30;
-
-    const position =
-        element.getBoundingClientRect().top +
-        window.scrollY -
-        offset;
-
-    window.scrollTo({
-        top: Math.max(0, position),
-        behavior: "smooth"
     });
 
 }
 
 
 /* =========================================================
-   POPUPS
+   ENTER BUTTON
    ========================================================= */
 
-function initializePopups() {
+function initializeEnterButton() {
 
-    const popups = $$(".popup, .comfort-popup");
+    const enterButton =
+        $("#enterButton") ||
+        $(".main-button");
 
-    popups.forEach(popup => {
+    on(enterButton, "click", event => {
 
-        const closeButton =
-            $(".close-button", popup) ||
-            $(".comfort-close", popup);
+        const cozySection =
+            $(".cozy-section");
 
-        safeAddEvent(
-            closeButton,
-            "click",
-            () => closePopup(popup)
-        );
+        if (cozySection) {
 
-        safeAddEvent(
-            popup,
-            "click",
-            event => {
+            cozySection.scrollIntoView({
+                behavior: "smooth"
+            });
 
-                if (event.target === popup) {
-                    closePopup(popup);
-                }
+        }
 
-            }
+        createHeartBurst(
+            event.clientX || window.innerWidth / 2,
+            event.clientY || window.innerHeight / 2,
+            18
         );
 
     });
 
+}
 
-    $$(".popup-action").forEach(button => {
 
-        safeAddEvent(button, "click", () => {
+/* =========================================================
+   COMFORT POPUP
+   ========================================================= */
 
-            const popup =
-                button.closest(".popup") ||
-                button.closest(".comfort-popup");
+function initializeComfortPopup() {
 
-            if (popup) {
-                closePopup(popup);
-            }
+    const popup =
+        $("#comfortPopup") ||
+        $(".comfort-popup");
+
+    if (!popup) return;
+
+
+    const closeButton =
+        $("#comfortClose") ||
+        $(".comfort-close") ||
+        $(".close-button", popup);
+
+
+    const contents = [
+        $("#hugContent"),
+        $("#kittyContent"),
+        $("#miniChocolateContent")
+    ].filter(Boolean);
+
+
+    function openComfort(type) {
+
+        popup.classList.add("show");
+
+        AppState.popupOpen = true;
+
+        document.body.style.overflow = "hidden";
+
+
+        contents.forEach(content => {
+
+            content.classList.remove("active");
 
         });
 
-    });
 
-}
+        let activeContent = null;
+
+        if (type === "hug") {
+            activeContent = $("#hugContent");
+        }
+
+        if (type === "kitty") {
+            activeContent = $("#kittyContent");
+        }
+
+        if (type === "chocolate") {
+            activeContent = $("#miniChocolateContent");
+        }
 
 
-function openPopup(popup) {
+        if (activeContent) {
 
-    if (!popup) return;
+            activeContent.classList.add("active");
 
-    $$(".popup.show, .comfort-popup.show").forEach(
-        otherPopup => {
+        } else if (contents.length) {
 
-            if (otherPopup !== popup) {
-                closePopup(otherPopup);
-            }
+            contents[0].classList.add("active");
 
         }
-    );
 
-    popup.classList.add("show");
-
-    popup.setAttribute(
-        "aria-hidden",
-        "false"
-    );
-
-    document.body.style.overflow = "hidden";
-
-    AppState.popupOpen = true;
-    AppState.currentPopup = popup;
-
-}
+    }
 
 
-function closePopup(popup) {
+    function closeComfort() {
 
-    if (!popup) return;
+        popup.classList.remove("show");
 
-    popup.classList.remove("show");
-
-    popup.setAttribute(
-        "aria-hidden",
-        "true"
-    );
-
-    const remaining =
-        $(".popup.show, .comfort-popup.show");
-
-    if (!remaining) {
+        AppState.popupOpen = false;
 
         document.body.style.overflow = "";
 
-        AppState.popupOpen = false;
-        AppState.currentPopup = null;
-
     }
 
-}
+
+    /* HUG CARD */
+
+    const hugCard =
+        $("#hugCard") ||
+        $('[data-comfort="hug"]');
+
+    on(hugCard, "click", event => {
+
+        openComfort("hug");
+
+        createHeartBurst(
+            event.clientX || window.innerWidth / 2,
+            event.clientY || window.innerHeight / 2,
+            22
+        );
+
+    });
 
 
-/* =========================================================
-   COMFORT CARDS
-   ========================================================= */
+    /* KITTY CARD */
 
-function initializeComfortCards() {
+    const kittyCard =
+        $("#kittyCard") ||
+        $('[data-comfort="kitty"]');
 
-    const cards = $$(".cozy-card");
+    on(kittyCard, "click", event => {
 
-    cards.forEach(card => {
+        openComfort("kitty");
 
-        safeAddEvent(card, "click", event => {
+        showRandomKitty();
 
-            createHeartBurst(
-                event.clientX,
-                event.clientY,
-                8
-            );
+        createHeartBurst(
+            event.clientX || window.innerWidth / 2,
+            event.clientY || window.innerHeight / 2,
+            14
+        );
 
-            const popupId =
-                card.dataset.popup ||
-                card.dataset.target;
+    });
 
-            if (popupId) {
 
-                const popup =
-                    document.querySelector(
-                        popupId.startsWith("#")
-                            ? popupId
-                            : `#${popupId}`
-                    );
+    /* MINI CHOCOLATE CARD */
 
-                if (popup) {
-                    activatePopupContent(
-                        popup,
-                        card.dataset.content
-                    );
+    const miniChocolateCard =
+        $("#miniChocolateCard") ||
+        $('[data-comfort="chocolate"]');
 
-                    openPopup(popup);
+    on(miniChocolateCard, "click", event => {
 
-                    return;
-                }
+        openComfort("chocolate");
 
-            }
+        createChocolateRain(16);
 
-            const title =
-                card.querySelector("h3");
+        createHeartBurst(
+            event.clientX || window.innerWidth / 2,
+            event.clientY || window.innerHeight / 2,
+            12
+        );
 
-            const description =
-                card.querySelector("p");
+    });
 
-            if (title) {
 
-                showComfortMessage(
-                    title.textContent,
-                    description
-                        ? description.textContent
-                        : "You deserve a little comfort today. 💗"
-                );
+    /* CLOSE */
 
+    on(closeButton, "click", closeComfort);
+
+
+    /* CLICK OUTSIDE */
+
+    on(popup, "click", event => {
+
+        if (event.target === popup) {
+            closeComfort();
+        }
+
+    });
+
+
+    /* ONE MORE HUG */
+
+    const hugAgain =
+        $("#hugAgain");
+
+    on(hugAgain, "click", event => {
+
+        createHeartBurst(
+            event.clientX || window.innerWidth / 2,
+            event.clientY || window.innerHeight / 2,
+            30
+        );
+
+        const originalText =
+            hugAgain.textContent;
+
+        hugAgain.textContent =
+            "🫂 BIGGEST HUG SENT 💗";
+
+        setTimeout(() => {
+
+            hugAgain.textContent =
+                originalText;
+
+        }, 1800);
+
+    });
+
+
+    /* MORE KITTY */
+
+    const moreKitty =
+        $("#moreKitty");
+
+    on(moreKitty, "click", event => {
+
+        showRandomKitty();
+
+        createTinyHearts(
+            event.clientX || window.innerWidth / 2,
+            event.clientY || window.innerHeight / 2
+        );
+
+    });
+
+
+    /* MORE CHOCOLATE */
+
+    const moreChocolate =
+        $("#moreChocolate");
+
+    on(moreChocolate, "click", () => {
+
+        createChocolateRain(28);
+
+    });
+
+
+    /* Allow other cards with data-comfort */
+
+    $$("[data-comfort]").forEach(card => {
+
+        on(card, "click", () => {
+
+            const type =
+                card.dataset.comfort;
+
+            if (type) {
+                openComfort(type);
             }
 
         });
@@ -355,72 +440,60 @@ function initializeComfortCards() {
 }
 
 
-function activatePopupContent(popup, contentId) {
+/* =========================================================
+   KITTY SWITCHER
+   ========================================================= */
 
-    if (!popup) return;
+const kittyImages = [
+    "images/kitty1.jpg",
+    "images/kitty2.jpg",
+    "images/kitty3.jpg"
+];
 
-    const contents =
-        $$(".popup-content", popup);
-
-    if (!contents.length) return;
-
-    contents.forEach(content => {
-        content.classList.remove("active");
-    });
-
-    if (contentId) {
-
-        const target =
-            document.getElementById(contentId);
-
-        if (target) {
-            target.classList.add("active");
-            return;
-        }
-
-    }
-
-    contents[0].classList.add("active");
-
-}
+const kittyCaptions = [
+    "Tiny kitty has arrived. 🐱🎀",
+    "This one came specifically for Babuuu. 🥺",
+    "Comfort kitty reporting for duty. 🫡🐱",
+    "Okay fine... one more tiny baby. 🧸",
+    "Motuu ordered maximum cuteness. 💗"
+];
 
 
-function showComfortMessage(title, message) {
+function showRandomKitty() {
 
-    let popup =
-        $(".comfort-popup");
+    const image =
+        $("#popupKittyImage");
 
-    if (!popup) {
-        popup = $(".popup");
-    }
+    const caption =
+        $("#kittyCaption");
 
-    if (!popup) {
+    if (image && kittyImages.length) {
 
-        showQuickMessage(
-            `${title} 💗`
-        );
+        const randomImage =
+            kittyImages[
+                Math.floor(
+                    Math.random() *
+                    kittyImages.length
+                )
+            ];
 
-        return;
+        image.src =
+            randomImage;
 
     }
 
-    const heading =
-        $(".popup-content.active h2", popup) ||
-        $(".popup-card h2", popup);
 
-    const paragraph =
-        $(".popup-content.active p", popup) ||
-        $(".popup-card p", popup);
+    if (caption) {
 
-    if (heading) {
-        heading.textContent = title;
+        caption.textContent =
+            kittyCaptions[
+                Math.floor(
+                    Math.random() *
+                    kittyCaptions.length
+                )
+            ];
+
     }
-
-    if (paragraph) {
-        paragraph.textContent = message;
-    }
-
-    openPopup(popup);
 
 }
 
@@ -432,66 +505,69 @@ function showComfortMessage(title, message) {
 function initializePeriodComfort() {
 
     const periodButton =
+        $("#periodButton") ||
         $(".period-button");
 
     const result =
+        $("#periodResult") ||
         $(".period-result");
 
     if (!periodButton) return;
 
 
-    const periodMessages = [
+    const messages = [
 
         "Take it slow today. Your comfort matters. 🌷",
 
-        "A warm drink, cozy blanket, and some rest can make things feel a little easier. 💗",
+        "A warm drink and a cozy blanket can make the day feel a little softer. 💗",
 
         "You don't have to be productive every minute. Rest is allowed. 🫶",
 
-        "Gentle movement or a warm shower may help you relax. 🌸",
+        "A warm shower or gentle movement may help you relax. 🌸",
 
         "Stay hydrated and give yourself permission to have a softer day. 💕",
 
-        "Be kind to yourself today. You deserve patience and care. 🐰"
+        "Be extra kind to yourself today, Babuuu. You deserve care. 🐱💗",
+
+        "Your Motuu is officially sending maximum comfort energy. 🫂"
 
     ];
 
 
-    safeAddEvent(
-        periodButton,
-        "click",
-        event => {
+    on(periodButton, "click", event => {
 
-            const message =
-                periodMessages[
-                    AppState.periodMessageIndex %
-                    periodMessages.length
-                ];
+        const message =
+            messages[
+                AppState.periodMessageIndex %
+                messages.length
+            ];
 
-            AppState.periodMessageIndex++;
+        AppState.periodMessageIndex++;
 
-            if (result) {
 
-                result.textContent = message;
+        if (result) {
 
-                result.classList.remove("show");
+            result.textContent =
+                message;
 
-                requestAnimationFrame(() => {
+            result.classList.remove("show");
 
-                    result.classList.add("show");
+            requestAnimationFrame(() => {
 
-                });
+                result.classList.add("show");
 
-            }
-
-            createHeartBurst(
-                event.clientX,
-                event.clientY,
-                10
-            );
+            });
 
         }
-    );
+
+
+        createHeartBurst(
+            event.clientX || window.innerWidth / 2,
+            event.clientY || window.innerHeight / 2,
+            12
+        );
+
+    });
 
 }
 
@@ -503,9 +579,11 @@ function initializePeriodComfort() {
 function initializeChocolate() {
 
     const button =
+        $("#chocolateButton") ||
         $(".cute-button");
 
     const result =
+        $("#chocolateResult") ||
         $(".result-message");
 
     if (!button) return;
@@ -513,107 +591,123 @@ function initializeChocolate() {
 
     const messages = [
 
-        "Emergency chocolate delivered 🍫💗",
+        "🍫 Chocolate delivered to Babuuu. Mission successful. 💗",
 
-        "Okay okay... one chocolate break coming right up! 🍫",
+        "Emergency chocolate department is now OPEN. 🍫✨",
 
-        "Chocolate makes the cozy level go 📈💗",
+        "Okay okay... one chocolate break coming right up! 🥺🍫",
 
-        "You officially deserve a sweet little treat. 🥰",
+        "Chocolate makes everything at least 7% better. 💗",
 
-        "Chocolate mode: ACTIVATED 🍫✨"
+        "Bournville department has been alerted immediately. 🚨🍫",
+
+        "Chocolate mode: ACTIVATED 🍫💖"
 
     ];
 
 
-    safeAddEvent(
-        button,
-        "click",
-        event => {
+    on(button, "click", event => {
 
-            const message =
-                messages[
-                    Math.floor(
-                        Math.random() *
-                        messages.length
-                    )
-                ];
+        const message =
+            messages[
+                Math.floor(
+                    Math.random() *
+                    messages.length
+                )
+            ];
 
-            if (result) {
 
-                result.textContent = message;
+        if (result) {
 
-                result.animate(
-                    [
-                        {
-                            opacity: 0,
-                            transform: "translateY(8px)"
-                        },
-                        {
-                            opacity: 1,
-                            transform: "translateY(0)"
-                        }
-                    ],
+            result.textContent =
+                message;
+
+            result.animate(
+                [
                     {
-                        duration: 400,
-                        easing: "ease-out"
+                        opacity: 0,
+                        transform: "translateY(10px)"
+                    },
+                    {
+                        opacity: 1,
+                        transform: "translateY(0)"
                     }
-                );
-
-            }
-
-            createChocolateRain();
-
-            createHeartBurst(
-                event.clientX,
-                event.clientY,
-                12
+                ],
+                {
+                    duration: 400,
+                    easing: "ease-out"
+                }
             );
 
         }
-    );
+
+
+        createChocolateRain(22);
+
+
+        createHeartBurst(
+            event.clientX || window.innerWidth / 2,
+            event.clientY || window.innerHeight / 2,
+            12
+        );
+
+    });
 
 }
 
 
-function createChocolateRain() {
+/* =========================================================
+   CHOCOLATE RAIN
+   ========================================================= */
 
-    const amount = 18;
+function createChocolateRain(amount = 20) {
+
+    const symbols = [
+        "🍫",
+        "🍫",
+        "🤎",
+        "✨"
+    ];
+
 
     for (let i = 0; i < amount; i++) {
 
         const chocolate =
-            document.createElement("div");
+            document.createElement("span");
 
         chocolate.className =
             "chocolate-rain";
 
         chocolate.textContent =
-            ["🍫", "🤎", "🍬"][
+            symbols[
                 Math.floor(
-                    Math.random() * 3
+                    Math.random() *
+                    symbols.length
                 )
             ];
 
         chocolate.style.left =
             `${Math.random() * 100}vw`;
 
+        chocolate.style.fontSize =
+            `${16 + Math.random() * 20}px`;
+
         chocolate.style.animationDuration =
-            `${1.4 + Math.random() * .9}s`;
+            `${1.2 + Math.random() * 1.5}s`;
 
         chocolate.style.animationDelay =
-            `${Math.random() * .25}s`;
+            `${Math.random() * 0.5}s`;
 
-        chocolate.style.fontSize =
-            `${18 + Math.random() * 14}px`;
+        document.body.appendChild(
+            chocolate
+        );
 
-        document.body.appendChild(chocolate);
 
         setTimeout(() => {
 
             chocolate.remove();
 
-        }, 2600);
+        }, 3500);
 
     }
 
@@ -627,280 +721,340 @@ function createChocolateRain() {
 function initializeLoveLetter() {
 
     const envelope =
+        $("#envelope") ||
         $(".envelope");
 
     const letter =
+        $("#letter") ||
         $(".letter");
 
     if (!envelope || !letter) return;
 
 
-    safeAddEvent(
-        envelope,
-        "click",
-        event => {
+    on(envelope, "click", event => {
 
-            AppState.letterOpen =
-                !AppState.letterOpen;
+        if (AppState.letterOpen) return;
 
-            letter.classList.toggle(
-                "open",
-                AppState.letterOpen
-            );
-
-            envelope.setAttribute(
-                "aria-expanded",
-                String(AppState.letterOpen)
-            );
+        AppState.letterOpen = true;
 
 
-            if (AppState.letterOpen) {
+        envelope.classList.add("open");
 
-                envelope.classList.add(
-                    "opened"
-                );
 
-                createHeartBurst(
-                    event.clientX,
-                    event.clientY,
-                    16
-                );
-
-                setTimeout(() => {
-
-                    letter.scrollIntoView({
-                        behavior: "smooth",
-                        block: "center"
-                    });
-
-                }, 200);
-
-            } else {
-
-                envelope.classList.remove(
-                    "opened"
-                );
-
+        envelope.animate(
+            [
+                {
+                    transform: "scale(1)"
+                },
+                {
+                    transform:
+                        "translateY(-8px) scale(1.03)"
+                },
+                {
+                    transform:
+                        "translateY(0) scale(1)"
+                }
+            ],
+            {
+                duration: 500,
+                easing: "ease-out"
             }
-
-        }
-    );
-
-}
+        );
 
 
-/* =========================================================
-   MUSIC
-   ========================================================= */
+        setTimeout(() => {
 
-function initializeMusic() {
+            envelope.style.opacity = "0";
+            envelope.style.pointerEvents = "none";
 
-    const player =
-        $(".music-player");
-
-    const audio =
-        $(".music-player audio");
-
-    if (!player || !audio) return;
-
-
-    safeAddEvent(
-        audio,
-        "play",
-        () => {
-
-            player.classList.add(
-                "playing"
-            );
-
-            AppState.musicPlaying = true;
-
-        }
-    );
-
-
-    safeAddEvent(
-        audio,
-        "pause",
-        () => {
-
-            player.classList.remove(
-                "playing"
-            );
-
-            AppState.musicPlaying = false;
-
-        }
-    );
-
-
-    safeAddEvent(
-        audio,
-        "ended",
-        () => {
-
-            player.classList.remove(
-                "playing"
-            );
-
-            AppState.musicPlaying = false;
-
-        }
-    );
-
-}
-
-
-/* =========================================================
-   HEART INTERACTIONS
-   ========================================================= */
-
-function initializeHeartInteractions() {
-
-    document.addEventListener(
-        "click",
-        event => {
-
-            const clickable =
-                event.target.closest(
-                    "button, .cozy-card, .polaroid, .envelope"
-                );
-
-            if (!clickable) return;
-
-            if (
-                clickable.classList.contains(
-                    "nav-heart"
-                )
-            ) {
-                return;
-            }
-
-            if (
-                clickable.classList.contains(
-                    "cute-button"
-                )
-            ) {
-                return;
-            }
-
-            if (
-                clickable.classList.contains(
-                    "period-button"
-                )
-            ) {
-                return;
-            }
-
-            if (
-                clickable.classList.contains(
-                    "envelope"
-                )
-            ) {
-                return;
-            }
+            letter.classList.add("open");
+            letter.classList.add("show");
 
             createHeartBurst(
-                event.clientX,
-                event.clientY,
-                5
+                event.clientX || window.innerWidth / 2,
+                event.clientY || window.innerHeight / 2,
+                26
             );
 
-        }
-    );
+
+            setTimeout(() => {
+
+                letter.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center"
+                });
+
+            }, 300);
+
+        }, 450);
+
+    });
 
 }
 
 
-function createHeartBurst(
-    x,
-    y,
-    amount = 8
-) {
+/* =========================================================
+   COMFORT MACHINE
+   ========================================================= */
 
-    if (
-        typeof x !== "number" ||
-        typeof y !== "number"
-    ) {
-        return;
-    }
+function initializeComfortMachine() {
+
+    const button =
+        $("#comfortButton") ||
+        $(".comfort-button");
+
+    const result =
+        $("#comfortResult") ||
+        $(".comfort-result");
+
+    if (!button) return;
 
 
-    const hearts = [
-        "💗",
-        "💕",
-        "💖",
-        "💞",
-        "♡"
+    const messages = [
+
+        "Idhar aao babuuu 🫂💗",
+
+        "Motuu is sending you the biggest virtual hug ever. 🧸",
+
+        "No pressure. Take things one tiny step at a time. 🌷",
+
+        "You deserve a soft, peaceful evening. 🎀",
+
+        "Emergency kitty has arrived. 🐱",
+
+        "Bournville department has been alerted. 🍫😭",
+
+        "One little smile for your Motuu? 🥺💗",
+
+        "You are very, very loved. ♡"
+
     ];
 
 
-    for (let i = 0; i < amount; i++) {
+    on(button, "click", event => {
 
-        const heart =
-            document.createElement("span");
-
-        heart.className =
-            "heart-burst";
-
-        heart.textContent =
-            hearts[
+        const message =
+            messages[
                 Math.floor(
                     Math.random() *
-                    hearts.length
+                    messages.length
                 )
             ];
 
 
-        const angle =
-            Math.random() *
-            Math.PI *
-            2;
+        if (result) {
 
-        const distance =
-            35 +
-            Math.random() * 90;
+            result.textContent =
+                message;
+
+            result.animate(
+                [
+                    {
+                        opacity: 0,
+                        transform: "scale(.96)"
+                    },
+                    {
+                        opacity: 1,
+                        transform: "scale(1)"
+                    }
+                ],
+                {
+                    duration: 350,
+                    easing: "ease-out"
+                }
+            );
+
+        }
 
 
-        const offsetX =
-            Math.cos(angle) *
-            distance;
+        createHeartBurst(
+            event.clientX || window.innerWidth / 2,
+            event.clientY || window.innerHeight / 2,
+            16
+        );
 
-        const offsetY =
-            Math.sin(angle) *
-            distance;
+    });
 
+}
+
+
+/* =========================================================
+   MUSIC PLAYER
+   ========================================================= */
+
+function initializeMusic() {
+
+    const audio =
+        $("#audio") ||
+        $(".music-player audio");
+
+    const player =
+        $(".music-player");
+
+    const disc =
+        $(".music-disc");
+
+    if (!audio) return;
+
+
+    on(audio, "play", () => {
+
+        AppState.musicPlaying = true;
+
+        if (player) {
+            player.classList.add("playing");
+        }
+
+        if (disc) {
+            disc.style.animationPlayState =
+                "running";
+        }
+
+    });
+
+
+    on(audio, "pause", () => {
+
+        AppState.musicPlaying = false;
+
+        if (player) {
+            player.classList.remove("playing");
+        }
+
+        if (disc) {
+            disc.style.animationPlayState =
+                "paused";
+        }
+
+    });
+
+
+    on(audio, "ended", () => {
+
+        AppState.musicPlaying = false;
+
+        if (player) {
+            player.classList.remove("playing");
+        }
+
+    });
+
+}
+
+
+/* =========================================================
+   FINAL SURPRISE
+   ========================================================= */
+
+function initializeFinalSurprise() {
+
+    const button =
+        $("#finalButton") ||
+        $(".final-button");
+
+    const popup =
+        $("#finalPopup") ||
+        $(".popup");
+
+    if (!button || !popup) return;
+
+
+    const closeButton =
+        $("#closePopup") ||
+        $(".close-button", popup);
+
+
+    function openFinalPopup() {
+
+        popup.classList.add("show");
+
+        AppState.popupOpen = true;
+
+        document.body.style.overflow = "hidden";
+
+        createHeartExplosion();
+
+    }
+
+
+    function closeFinalPopup() {
+
+        popup.classList.remove("show");
+
+        AppState.popupOpen = false;
+
+        document.body.style.overflow = "";
+
+    }
+
+
+    on(button, "click", openFinalPopup);
+
+    on(closeButton, "click", closeFinalPopup);
+
+
+    on(popup, "click", event => {
+
+        if (event.target === popup) {
+
+            closeFinalPopup();
+
+        }
+
+    });
+
+}
+
+
+/* =========================================================
+   BACKGROUND HEARTS
+   ========================================================= */
+
+function initializeBackgroundHearts() {
+
+    const container =
+        $("#backgroundHearts") ||
+        $(".background-hearts");
+
+    if (!container) return;
+
+
+    const symbols = [
+        "♡",
+        "♥",
+        "✦",
+        "✧",
+        "💗",
+        "💕"
+    ];
+
+
+    function createHeart() {
+
+        if (document.hidden) return;
+
+
+        const heart =
+            document.createElement("span");
+
+        heart.textContent =
+            symbols[
+                Math.floor(
+                    Math.random() *
+                    symbols.length
+                )
+            ];
 
         heart.style.left =
-            `${x}px`;
-
-        heart.style.top =
-            `${y}px`;
-
-        heart.style.setProperty(
-            "--x",
-            `${offsetX}px`
-        );
-
-        heart.style.setProperty(
-            "--y",
-            `${offsetY}px`
-        );
-
-        heart.style.setProperty(
-            "--rotate",
-            `${-40 + Math.random() * 80}deg`
-        );
-
+            `${Math.random() * 100}%`;
 
         heart.style.animationDuration =
-            `${.7 + Math.random() * .6}s`;
+            `${8 + Math.random() * 8}s`;
 
         heart.style.fontSize =
-            `${16 + Math.random() * 14}px`;
+            `${12 + Math.random() * 20}px`;
 
-
-        document.body.appendChild(
+        container.appendChild(
             heart
         );
 
@@ -909,7 +1063,118 @@ function createHeartBurst(
 
             heart.remove();
 
-        }, 1500);
+        }, 17000);
+
+    }
+
+
+    for (let i = 0; i < 5; i++) {
+
+        setTimeout(
+            createHeart,
+            i * 800
+        );
+
+    }
+
+
+    setInterval(
+        createHeart,
+        1800
+    );
+
+}
+
+
+/* =========================================================
+   HEART BURST
+   ========================================================= */
+
+function createHeartBurst(
+    x = window.innerWidth / 2,
+    y = window.innerHeight / 2,
+    amount = 20
+) {
+
+    const symbols = [
+        "💗",
+        "💕",
+        "♡",
+        "✨",
+        "🌸",
+        "🎀"
+    ];
+
+
+    for (let i = 0; i < amount; i++) {
+
+        const item =
+            document.createElement("span");
+
+        item.className =
+            "heart-burst";
+
+        item.textContent =
+            symbols[
+                Math.floor(
+                    Math.random() *
+                    symbols.length
+                )
+            ];
+
+        item.style.left =
+            `${x}px`;
+
+        item.style.top =
+            `${y}px`;
+
+        item.style.fontSize =
+            `${14 + Math.random() * 18}px`;
+
+
+        const angle =
+            Math.random() *
+            Math.PI * 2;
+
+        const distance =
+            70 + Math.random() * 180;
+
+
+        const moveX =
+            Math.cos(angle) *
+            distance;
+
+        const moveY =
+            Math.sin(angle) *
+            distance;
+
+
+        item.style.setProperty(
+            "--x",
+            `${moveX}px`
+        );
+
+        item.style.setProperty(
+            "--y",
+            `${moveY}px`
+        );
+
+        item.style.setProperty(
+            "--rotate",
+            `${Math.random() * 360}deg`
+        );
+
+
+        document.body.appendChild(
+            item
+        );
+
+
+        setTimeout(() => {
+
+            item.remove();
+
+        }, 1400);
 
     }
 
@@ -917,124 +1182,39 @@ function createHeartBurst(
 
 
 /* =========================================================
-   POLAROID / MEMORY INTERACTION
+   TINY HEARTS
    ========================================================= */
 
-$$(".polaroid").forEach(polaroid => {
+function createTinyHearts(
+    x = window.innerWidth / 2,
+    y = window.innerHeight / 2
+) {
 
-    safeAddEvent(
-        polaroid,
-        "click",
-        event => {
-
-            createHeartBurst(
-                event.clientX,
-                event.clientY,
-                8
-            );
-
-        }
-    );
-
-});
-
-
-$$(".memory-card").forEach(card => {
-
-    safeAddEvent(
-        card,
-        "click",
-        event => {
-
-            createHeartBurst(
-                event.clientX,
-                event.clientY,
-                8
-            );
-
-        }
-    );
-
-});
-
-
-/* =========================================================
-   FINAL SECTION
-   ========================================================= */
-
-function initializeFinalSection() {
-
-    const finalButton =
-        $(".final-button");
-
-    if (!finalButton) return;
-
-
-    safeAddEvent(
-        finalButton,
-        "click",
-        event => {
-
-            const popup =
-                $(".popup");
-
-            if (popup) {
-
-                activatePopupContent(
-                    popup
-                );
-
-                openPopup(popup);
-
-            } else {
-
-                showQuickMessage(
-                    "You deserve all the love in the world. 💗"
-                );
-
-            }
-
-
-            createHeartBurst(
-                event.clientX,
-                event.clientY,
-                20
-            );
-
-        }
+    createHeartBurst(
+        x,
+        y,
+        10
     );
 
 }
 
 
 /* =========================================================
-   KEYBOARD CONTROLS
+   HEART EXPLOSION
    ========================================================= */
 
-function initializeKeyboardControls() {
+function createHeartExplosion() {
 
-    document.addEventListener(
-        "keydown",
-        event => {
+    const centerX =
+        window.innerWidth / 2;
 
-            if (
-                event.key === "Escape" &&
-                AppState.popupOpen
-            ) {
+    const centerY =
+        window.innerHeight / 2;
 
-                if (
-                    AppState.currentPopup
-                ) {
-
-                    closePopup(
-                        AppState.currentPopup
-                    );
-
-                }
-
-            }
-
-        }
+    createHeartBurst(
+        centerX,
+        centerY,
+        45
     );
 
 }
@@ -1046,25 +1226,39 @@ function initializeKeyboardControls() {
 
 function initializeScrollReveal() {
 
-    const elements =
-        $$(".reveal");
+    const elements = [
+
+        ...$$(".section"),
+        ...$$(".final-section"),
+        ...$$(".memory-card"),
+        ...$$(".little-card")
+
+    ];
 
     if (!elements.length) return;
 
 
-    if (
-        !("IntersectionObserver" in window)
-    ) {
+    elements.forEach((element, index) => {
 
-        elements.forEach(
-            element => {
+        if (element.classList.contains("hero")) {
+            return;
+        }
 
-                element.classList.add(
-                    "visible"
-                );
+        element.classList.add("reveal");
 
-            }
-        );
+        element.style.transitionDelay =
+            `${Math.min(index * 0.04, 0.25)}s`;
+
+    });
+
+
+    if (!("IntersectionObserver" in window)) {
+
+        elements.forEach(element => {
+
+            element.classList.add("visible");
+
+        });
 
         return;
 
@@ -1073,13 +1267,12 @@ function initializeScrollReveal() {
 
     const observer =
         new IntersectionObserver(
+
             entries => {
 
                 entries.forEach(entry => {
 
-                    if (
-                        entry.isIntersecting
-                    ) {
+                    if (entry.isIntersecting) {
 
                         entry.target.classList.add(
                             "visible"
@@ -1094,199 +1287,19 @@ function initializeScrollReveal() {
                 });
 
             },
+
             {
-                threshold: 0.12,
-                rootMargin:
-                    "0px 0px -50px 0px"
+                threshold: 0.12
             }
+
         );
 
 
-    elements.forEach(
-        element => {
+    elements.forEach(element => {
 
-            observer.observe(element);
+        observer.observe(element);
 
-        }
-    );
-
-}
-
-
-/* =========================================================
-   BACKGROUND HEARTS
-   ========================================================= */
-
-function initializeBackgroundHearts() {
-
-    const container =
-        $(".background-hearts");
-
-    if (!container) return;
-
-
-    const heartSymbols = [
-        "♡",
-        "♥",
-        "♡",
-        "💕"
-    ];
-
-
-    const createBackgroundHeart =
-        () => {
-
-            const heart =
-                document.createElement("span");
-
-            heart.textContent =
-                heartSymbols[
-                    Math.floor(
-                        Math.random() *
-                        heartSymbols.length
-                    )
-                ];
-
-
-            heart.style.left =
-                `${Math.random() * 100}%`;
-
-            heart.style.fontSize =
-                `${12 + Math.random() * 25}px`;
-
-            heart.style.animationDuration =
-                `${7 + Math.random() * 8}s`;
-
-            heart.style.animationDelay =
-                `${Math.random() * 2}s`;
-
-
-            container.appendChild(
-                heart
-            );
-
-
-            setTimeout(() => {
-
-                heart.remove();
-
-            }, 17000);
-
-        };
-
-
-    for (
-        let i = 0;
-        i < 10;
-        i++
-    ) {
-
-        setTimeout(
-            createBackgroundHeart,
-            i * 500
-        );
-
-    }
-
-
-    setInterval(
-        createBackgroundHeart,
-        1300
-    );
-
-}
-
-
-/* =========================================================
-   QUICK MESSAGE
-   ========================================================= */
-
-function showQuickMessage(message) {
-
-    if (!message) return;
-
-
-    let toast =
-        $("#comfort-toast");
-
-
-    if (!toast) {
-
-        toast =
-            document.createElement("div");
-
-        toast.id =
-            "comfort-toast";
-
-
-        Object.assign(
-            toast.style,
-            {
-                position: "fixed",
-                left: "50%",
-                bottom: "28px",
-                transform:
-                    "translate(-50%, 20px)",
-                padding:
-                    "13px 20px",
-                borderRadius:
-                    "999px",
-                background:
-                    "rgba(255,255,255,.94)",
-                color:
-                    "#d85c88",
-                fontWeight:
-                    "700",
-                fontSize:
-                    "13px",
-                boxShadow:
-                    "0 18px 45px rgba(120,70,100,.18)",
-                border:
-                    "1px solid rgba(255,255,255,.95)",
-                zIndex:
-                    "10000",
-                opacity:
-                    "0",
-                pointerEvents:
-                    "none",
-                transition:
-                    "opacity .3s ease, transform .3s ease"
-            }
-        );
-
-
-        document.body.appendChild(
-            toast
-        );
-
-    }
-
-
-    toast.textContent =
-        message;
-
-    toast.style.opacity =
-        "1";
-
-    toast.style.transform =
-        "translate(-50%, 0)";
-
-
-    clearTimeout(
-        toast._hideTimer
-    );
-
-
-    toast._hideTimer =
-        setTimeout(() => {
-
-            toast.style.opacity =
-                "0";
-
-            toast.style.transform =
-                "translate(-50%, 20px)";
-
-        }, 2600);
+    });
 
 }
 
@@ -1297,45 +1310,52 @@ function showQuickMessage(message) {
 
 function initializeImageFallbacks() {
 
-    const images =
-        $$("img");
+    $$("img").forEach(img => {
+
+        on(img, "error", () => {
+
+            if (img.dataset.fallbackApplied) return;
+
+            img.dataset.fallbackApplied =
+                "true";
+
+            img.style.objectFit =
+                "contain";
+
+            img.style.padding =
+                "30px";
+
+            img.style.background =
+                "#fff0f5";
 
 
-    images.forEach(img => {
+            const placeholder =
+                document.createElement("div");
 
-        safeAddEvent(
-            img,
-            "error",
-            () => {
+            placeholder.textContent =
+                "💗";
 
-                img.classList.add(
-                    "image-error"
-                );
+            placeholder.style.fontSize =
+                "50px";
+
+
+            if (
+                !img.getAttribute("alt")
+            ) {
 
                 img.alt =
                     "Comfort Place memory";
 
-
-                if (
-                    !img.dataset.fallbackApplied
-                ) {
-
-                    img.dataset.fallbackApplied =
-                        "true";
-
-                    img.style.objectFit =
-                        "contain";
-
-                    img.style.padding =
-                        "30px";
-
-                    img.style.background =
-                        "#fff0f5";
-
-                }
-
             }
-        );
+
+        });
+
+
+        on(img, "load", () => {
+
+            img.classList.add("loaded");
+
+        });
 
     });
 
@@ -1343,168 +1363,146 @@ function initializeImageFallbacks() {
 
 
 /* =========================================================
-   UTILITY: ADD RIPPLE EFFECT
+   DOUBLE CLICK HEARTS
    ========================================================= */
 
-function addRipple(button) {
+function initializeHeartInteractions() {
 
-    if (!button) return;
+    $$(
+        ".memory-card, .polaroid, .chocolate-image"
+    ).forEach(element => {
 
+        on(element, "dblclick", event => {
 
-    safeAddEvent(
-        button,
-        "click",
-        event => {
-
-            const rect =
-                button.getBoundingClientRect();
-
-
-            const ripple =
-                document.createElement("span");
-
-
-            ripple.className =
-                "button-ripple";
-
-
-            const size =
-                Math.max(
-                    rect.width,
-                    rect.height
-                );
-
-
-            ripple.style.width =
-                `${size}px`;
-
-            ripple.style.height =
-                `${size}px`;
-
-            ripple.style.left =
-                `${event.clientX - rect.left - size / 2}px`;
-
-            ripple.style.top =
-                `${event.clientY - rect.top - size / 2}px`;
-
-
-            button.appendChild(
-                ripple
+            createHeartBurst(
+                event.clientX,
+                event.clientY,
+                18
             );
 
+        });
 
-            setTimeout(() => {
-
-                ripple.remove();
-
-            }, 700);
-
-        }
-    );
+    });
 
 }
 
 
-$$(
-    ".main-button, .cute-button, .comfort-button, .final-button, .period-button"
-).forEach(
-    addRipple
-);
-
-
 /* =========================================================
-   SMOOTH IMAGE LOADING
+   BUTTON EFFECTS
    ========================================================= */
 
-$$("img").forEach(img => {
+function initializeButtonEffects() {
 
-    if (img.complete) {
-
-        img.classList.add(
-            "loaded"
+    const buttons =
+        $$(
+            ".main-button, .cute-button, .comfort-button, .final-button, .period-button, .nav-heart"
         );
 
-    } else {
 
-        safeAddEvent(
-            img,
-            "load",
-            () => {
+    buttons.forEach(button => {
 
-                img.classList.add(
-                    "loaded"
-                );
-
-            }
-        );
-
-    }
-
-});
-
-
-/* =========================================================
-   DOUBLE CLICK HEART EFFECT
-   ========================================================= */
-
-$$(".memory-card, .polaroid").forEach(
-    element => {
-
-        safeAddEvent(
-            element,
-            "dblclick",
-            event => {
-
-                createHeartBurst(
-                    event.clientX,
-                    event.clientY,
-                    18
-                );
-
-            }
-        );
-
-    }
-);
-
-
-/* =========================================================
-   PREVENT ACCIDENTAL DRAGGING
-   ========================================================= */
-
-$$(
-    ".nav-heart, .main-button, .cute-button, .comfort-button, .final-button, .period-button, .envelope"
-).forEach(
-    element => {
-
-        element.setAttribute(
+        button.setAttribute(
             "draggable",
             "false"
         );
 
-    }
-);
+
+        on(button, "pointerdown", () => {
+
+            button.style.transform =
+                "scale(.96)";
+
+        });
+
+
+        on(button, "pointerup", () => {
+
+            button.style.transform =
+                "";
+
+        });
+
+
+        on(button, "pointerleave", () => {
+
+            button.style.transform =
+                "";
+
+        });
+
+    });
+
+}
+
+
+/* =========================================================
+   KEYBOARD CONTROLS
+   ========================================================= */
+
+function initializeKeyboardControls() {
+
+    on(document, "keydown", event => {
+
+        /* ESC closes all popups */
+
+        if (event.key === "Escape") {
+
+            $$(".comfort-popup.show, .popup.show")
+                .forEach(popup => {
+
+                    popup.classList.remove("show");
+
+                });
+
+            document.body.style.overflow = "";
+
+            AppState.popupOpen = false;
+
+        }
+
+
+        /* H = little heart surprise */
+
+        if (
+            event.key.toLowerCase() === "h" &&
+            !event.ctrlKey &&
+            !event.metaKey
+        ) {
+
+            createHeartBurst(
+                window.innerWidth / 2,
+                window.innerHeight / 2,
+                14
+            );
+
+        }
+
+    });
+
+}
 
 
 /* =========================================================
    PAGE VISIBILITY
+   Pause music when tab is hidden
    ========================================================= */
 
 document.addEventListener(
     "visibilitychange",
     () => {
 
+        if (!document.hidden) return;
+
+        const audio =
+            $("#audio") ||
+            $(".music-player audio");
+
         if (
-            document.hidden &&
-            AppState.musicPlaying
+            audio &&
+            !audio.paused
         ) {
 
-            const audio =
-                $(".music-player audio");
-
-            if (audio) {
-                audio.pause();
-            }
+            audio.pause();
 
         }
 
@@ -1513,20 +1511,6 @@ document.addEventListener(
 
 
 /* =========================================================
-   CONSOLE MESSAGE
-   ========================================================= */
-
-console.log(
-    "%c💗 Comfort Place loaded successfully!",
-    "font-size:16px;font-weight:bold;color:#d85c88;"
-);
-
-console.log(
-    "%cMade with love ✨",
-    "font-size:12px;color:#987d8b;"
-);
-
-
-/* =========================================================
    END OF SCRIPT
    ========================================================= */
+
